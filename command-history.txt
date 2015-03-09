@@ -1,0 +1,107 @@
+  967  mkdir lab-git-preserve-details-in-feature-branch
+  975  git init
+
+  974  mvim 1.txt
+  980  git add .
+  982  git commit -m 'm c1'
+
+  986  mvim 1.txt
+  987  git add .
+  988  git commit -m 'm c2'
+
+  984  git remote add origin git@github.com:ApolloTang/lab-git-preserve-details-in-feature-branch .git
+  985  git push -u origin master
+
+  993  git co -b feature
+       git tag common-ances
+
+  994  mvim 1.txt
+ 1000  git add .
+ 1001  git commit -m 'f c3'
+ 1004  git push --set-upstream origin feature
+
+ 1006  mvim 1.txt
+ 1008  git add .
+ 1009  git commit -m 'd c4'
+ 1011  git push
+
+
+ 1006  mvim 1.txt    // <-- edit line in master
+ 1008  git add .
+ 1009  git commit -m 'f c5 edit code by master'
+ 1011  git push
+
+ 1013  git co master
+ 1014  mvim 1.txt    // <-- edit the same line no master and dev is in conflic
+ 1016  git add .
+ 1021  git commit -m 'm c6 change same line edited by feature'
+ 1026  git push
+
+ 1027  git co feature
+ 1038  git branch feature-backup
+
+        * 3a63a75 (origin/master, master) m c6 change same line edited by feature
+        | * 09ecce9 (HEAD, origin/feature, feature-backup, feature) f c5 edit code by master
+        | * 0fa4a2b f c4
+        | * 845c6f0 f c3
+        |/
+        * 11a7b3e (tag: common-ances) m c2
+        * e16154b m c1
+
+ 1050  git reset --soft common-ances
+
+        * 3a63a75 (origin/master, master) m c6 change same line edited by feature
+        | * 09ecce9 (origin/feature, feature-backup) f c5 edit code by master
+        | * 0fa4a2b f c4
+        | * 845c6f0 f c3
+        |/
+        * 11a7b3e (HEAD, tag: common-ances, feature) m c2
+        * e16154b m c1
+
+        $ gst
+        On branch feature
+        Your branch is behind 'origin/feature' by 3 commits, and can be fast-forwarded.
+          (use "git pull" to update your local branch)
+        Changes to be committed:
+          (use "git reset HEAD <file>..." to unstage)
+
+            modified:   1.txt
+
+
+ 1061  git commit -m 'c7 [add] feature'
+
+        * eb6ab31 (HEAD, feature) c7 [add] feature
+        | * 3a63a75 (origin/master, master) m c6 change same line edited by feature
+        |/
+        | * 09ecce9 (origin/feature, feature-backup) f c5 edit code by master
+        | * 0fa4a2b f c4
+        | * 845c6f0 f c3
+        |/
+        * 11a7b3e (tag: common-ances) m c2
+        * e16154b m c1
+
+ 1069  git rebase master
+
+        Applying: c7 [add] feature
+
+
+ 1071  git mergetool
+ 1073  git rebase --continue
+
+
+[!!!] DO NOT DO "git pull" HERE
+
+ 1078  git co master
+ 1079  git merge feature
+ 1082  git push
+
+        $ glg
+        * e539b78 (HEAD, origin/master, master, feature) c7 [add] feature
+        * 3a63a75 m c6 change same line edited by feature
+        | * 09ecce9 (origin/feature, feature-backup) f c5 edit code by master
+        | * 0fa4a2b f c4
+        | * 845c6f0 f c3
+        |/
+        * 11a7b3e (tag: common-ances) m c2
+        * e16154b m c1
+
