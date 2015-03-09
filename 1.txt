@@ -10,3 +10,7 @@ m c1 4
         f c3 4
     m c2 3
     m c2 4
+        f c4 1
+        f c4 2
+        f c4 3
+        f c4 4
