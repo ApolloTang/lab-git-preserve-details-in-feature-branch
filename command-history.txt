@@ -105,3 +105,6 @@
         * 11a7b3e (tag: common-ances) m c2
         * e16154b m c1
 
+
+[!!!] note the "origin/feature" and "feature" are out of sync,
+Don't try to sync them, delete them instead
